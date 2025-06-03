@@ -1,0 +1,8 @@
+START RequestId: f9ff7c6c-3afd-4b47-99eb-65e71ab9c553 Version: $LATEST
+2025/06/03 09:02:46 Using file path: /var/task/products.csv
+2025/06/03 09:02:46 Failed to open CSV file at /var/task/products.csv: open /var/task/products.csv: no such file or directory
+open /var/task/products.csv: no such file or directory: PathError
+null
+END RequestId: 12f35b99-8bec-4043-9a03-e98eee475c73
+REPORT RequestId: 12f35b99-8bec-4043-9a03-e98eee475c73	Init Duration: 0.09 ms	Duration: 645.85 ms	Billed Duration: 646 ms	Memory Size: 256 MB	Max Memory Used: 256 MB	
+{"errorMessage": "open /var/task/products.csv: no such file or directory", "errorType": "PathError"}

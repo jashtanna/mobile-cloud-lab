@@ -1,0 +1,10 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": { "name": "product-data-bucket" },
+        "object": { "key": "products.csv" }
+      }
+    }
+  ]
+}

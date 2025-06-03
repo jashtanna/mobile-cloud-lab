@@ -1,0 +1,4 @@
+name,image,price,qty
+Laptop,http://example.com/laptop.jpg,999.99,10
+Phone,,499.99,0
+Tablet,http://example.com/tablet.jpg,299.99,5

@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  PostgresURL:
+    Type: String
+    Default: postgres://postgres:root@host.docker.internal:5432/product_db?sslmode=disable
+    Description: PostgreSQL connection URL
+  RedisAddr:
+    Type: String
+    Default: host.docker.internal:6379
+    Description: Redis host and port
+  RedisPassword:
+    Type: String
+    Default: ""
+    Description: Redis password
+
+Resources:
+  UploadProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: uploadProduct/
+      Handler: main
+      Runtime: go1.x
+      MemorySize: 256
+      Timeout: 60
+      Environment:
+        Variables:
+          POSTGRES_URL: !Ref PostgresURL
+          REDIS_ADDR: !Ref RedisAddr
+          REDIS_PASSWORD: !Ref RedisPassword
+          NODE_ENV: local
+          S3_BUCKET: product-data-bucket
+          AWS_REGION: us-east-1
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref ProductBucket
+            Events: s3:ObjectCreated:*
+      Policies:
+        - S3ReadPolicy:
+            BucketName: product-data-bucket
+  GetAllProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getAllProducts/
+      Handler: main
+      Runtime: go1.x
+      MemorySize: 256
+      Timeout: 30
+      Environment:
+        Variables:
+          POSTGRES_URL: !Ref PostgresURL
+          REDIS_ADDR: !Ref RedisAddr
+          REDIS_PASSWORD: !Ref RedisPassword
+          NODE_ENV: local
+          S3_BUCKET: product-data-bucket
+          AWS_REGION: us-east-1
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: GET
+  ProductBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: product-data-bucket
